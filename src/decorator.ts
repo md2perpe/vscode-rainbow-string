@@ -17,12 +17,9 @@ export function decorate() {
         if (chars.length > 0) {
             chars.forEach((_, i) => {
                 var matchIndex = match.index + 1
-                let rainbowIndex = i % colors.length
-                let startIndex = matchIndex + i
-                let endIndex = matchIndex + i + 1
-                let start = editor.document.positionAt(startIndex)
-                let end = editor.document.positionAt(endIndex)
-                decorators[rainbowIndex].push(new vscode.Range(start, end))
+                let start = editor.document.positionAt(matchIndex + i)
+                let end   = editor.document.positionAt(matchIndex + i + 1)
+                decorators[i % colors.length].push(new vscode.Range(start, end))
             });
         }
     }
