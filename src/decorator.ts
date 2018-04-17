@@ -6,7 +6,7 @@ let colors = Array.from(rainborColors)
 export function decorate() {
     let editor = vscode.window.activeTextEditor;
     let text = editor.document.getText()
-    let rainbows = colors.map(x => vscode.window.createTextEditorDecorationType({ color: x }))
+    let decorators = colors.map(x => vscode.window.createTextEditorDecorationType({ color: x }))
     let regex = /"(.*?)"/g
     let ranges = colors.map(color => [])
     let match: RegExpMatchArray;
@@ -27,6 +27,6 @@ export function decorate() {
         }
     }
     ranges.forEach((range, index) => {
-        editor.setDecorations(rainbows[index], range)
+        editor.setDecorations(decorators[index], range)
     })
 }
