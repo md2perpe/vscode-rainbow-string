@@ -16,7 +16,10 @@ export function decorate() {
 
         if (chars.length > 0) {
             chars.forEach((_, i) => {
+                // match.index points to the " char; we want to start at the text inside
                 var matchIndex = match.index + 1
+                
+                // Create range spanning one character
                 let start = editor.document.positionAt(matchIndex + i)
                 let end   = editor.document.positionAt(matchIndex + i + 1)
                 decorators[i % colors.length].push(new vscode.Range(start, end))
