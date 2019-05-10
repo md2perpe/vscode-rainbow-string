@@ -6,9 +6,9 @@ let colors = Array.from(rainborColors)
 export function decorate() {
     let editor = vscode.window.activeTextEditor;
     let text = editor.document.getText()
-    let rainbows = colors.map(x => vscode.window.createTextEditorDecorationType({ color: x }))
+    let decorators = colors.map(x => vscode.window.createTextEditorDecorationType({ color: x }))
     let regex = /"(.*?)"/g
-    let decorators = colors.map(color => [])
+    let ranges = colors.map(color => [])
     let match: RegExpMatchArray;
 
     while ((match = regex.exec(text))) {
@@ -16,17 +16,17 @@ export function decorate() {
 
         if (chars.length > 0) {
             chars.forEach((_, i) => {
+                // match.index points to the " char; we want to start at the text inside
                 var matchIndex = match.index + 1
-                let rainbowIndex = i % colors.length
-                let startIndex = matchIndex + i
-                let endIndex = matchIndex + i + 1
-                let start = editor.document.positionAt(startIndex)
-                let end = editor.document.positionAt(endIndex)
-                decorators[rainbowIndex].push(new vscode.Range(start, end))
+                
+                // Create range spanning one character
+                let start = editor.document.positionAt(matchIndex + i)
+                let end   = editor.document.positionAt(matchIndex + i + 1)
+                ranges[i % colors.length].push(new vscode.Range(start, end))
             });
         }
     }
-    decorators.forEach((d, index) => {
-        editor.setDecorations(rainbows[index], d)
+    ranges.forEach((range, index) => {
+        editor.setDecorations(decorators[index], range)
     })
 }
